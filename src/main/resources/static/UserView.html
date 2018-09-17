@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>User Data viewer</title>
+    <script src="/webjars/jquery/3.3.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/webjars/bootstrap/3.3.7-1/css/bootstrap-theme.min.css">
+    <script src="/webjars/bootstrap/3.3.7-1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="/webjars/datatables.net-bs/2.1.1/css/dataTables.bootstrap.min.css">
+    <script src="/webjars/datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+    <script src="/webjars/datatables.net-bs/2.1.1/js/dataTables.bootstrap.min.js"></script>
+    <script src="/js/alert.js"></script>
+    <script src="/js/timer.js"></script>
+    <script src="/js/utils.js"></script>
+</head>
+<body>
+<div>
+    <div id="includedHeader"></div>
+    <div class="container">
+        <h3>Active User Info</h3>
+        <h3>Create New User</h3>
+        <form class="form-inline">
+            <div class="form-group">
+                <label for="firstName">First Name:</label>
+                <input type="text" class="form-control" id="firstName" name="name">
+                <label for="lastName">Last Name:</label>
+                <input type="text" class="form-control" id="lastName" name="name">
+                <label for="birthDay">Birth Day:</label>
+                <input type="date" class="form-control" id="birthDay" name="name">
+                <label for="gender">Gender:</label>
+                <input type="text" class="form-control" id="Gender" name="name">
+            </div>
+            <button type="button" class="btn btn-default" onclick="onCreateNewUser()">Create</button>
+        </form>
+        <!-- Existing Users -->
+        <h3>Users</h3>
+        <table class="table table-striped table-bordered" id="userTable">
+            <thead>
+            <tr>
+                <th>Id</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Birth Date</th>
+                <th>Gender</th>
+                <th></th>
+            </tr>
+            </thead>
+        </table>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function(){
+        datatable = $('#userTable').DataTable({
+            ajax: {
+                url: '/api/v1/userRepList',
+                // defaults to data unless we define otherwise
+                dataSrc: ''
+            },
+            columns: [
+                { data: 'userId' },
+                { data: 'firstName' },
+                { data: 'lastName' },
+                { data: 'birthDay' },
+                { data: 'gender' },
+                {
+                    data: 'active',
+                    render: function(data, type, row) {
+                            return '<button type="button" class="btn btn-primary btn-sm" onclick="onToggleDeleteUser(\'' + row.id + '\')">Delete</button>'
+                    }
+                }
+            ],
+            order: [[2, "desc"], [3, "desc"]]
+        });
+    });
+    // TODO consolidate JavaScript functions somewhere else
+    function onCreateNewUser() {
+        $.post({
+            url: '/api/trial',
+            // https://stackoverflow.com/questions/9169495/passing-variables-to-a-form-using-onclick
+            data: { name: document.getElementById('name').value },
+            contentType: 'application/x-www-form-urlencoded',
+            success: function (resp) {
+                Alert.info("Trial with id: " + resp.id + " was generated")
+                // datatable.rows.add([resp]).draw(); // Add new row and redraw (doesn't work for us because the active flag flips for old row)
+                // https://stackoverflow.com/questions/40074154/redraw-datatable-after-ajax-call
+                datatable.ajax.reload()
+                // activeTrial = resp
+                // loadActiveUserInfo()
+            }
+        });
+    }
+    function onToggleDeleteUser(uuid) {
+        console.log(uuid)
+        $.get('/api/user/' + uuid + '/delete', function (resp) {
+            Alert.info("User with id: " + resp.id + " was switched to inactive")
+            datatable.ajax.reload()
+            // loadActiveUserInfo()
+        });
+    }
+</script>
+</body>
+</html>

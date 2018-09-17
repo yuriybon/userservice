@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="css/bootstrap.css" type="text/css" />
+    <link rel="stylesheet" href="/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/webjars/bootstrap/3.3.7-1/css/bootstrap-theme.min.css">
+    <script src="/webjars/bootstrap/3.3.7-1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="/webjars/datatables.net-bs/2.1.1/css/dataTables.bootstrap.min.css">
+    <script src="/webjars/datatables.net/1.10.16/js/jquery.dataTables.js"></script>
+    <script src="/webjars/datatables.net-bs/2.1.1/js/dataTables.bootstrap.min.js"></script>
+    <script src="/webjars/jquery-i18n-properties/1.10.2/jquery.i18n.properties.min.js"></script>
+    <style type="text/css">
+        #mytable {
+            margin: 1px auto;
+            width: 60%;
+            position: relative;
+        }
+
+        .glyphicon {
+            font-size: 20px;
+        }
+
+        .add-row {
+            color: #32CD32;
+        }
+
+        .add-row:hover {
+            color: #228B22;
+        }
+
+        .delete-row {
+            color: #FF0000;
+        }
+
+        table {
+            border-collapse: collapse;
+        }
+
+        table, th, td {
+            border: 1px solid black;
+        }
+
+        footer {
+            color: #228B22;
+        }
+        /*.delete-row:hover {*/
+            /*color: #B22222;*/
+        /*}*/
+    </style>
+</head>
+<body>
+<div id="mytable">
+    <table class="table">
+        <tr>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Position</th>
+            <th class="add-row">ADD</th>
+            <!--<th><span class="add-row glyphicon glyphicon-plus"></span></th>-->
+        </tr>
+        <tr>
+            <td contenteditable="true">Kim</td>
+            <td contenteditable="true">Bell</td>
+            <td contenteditable="true">Senior Analyst</td>
+            <td <input type='button' value='Delete' class='delete-row' onclick='delete_row("+table_len+")'>DEL</td>
+            <!--<td><span class="delete-row glyphicon glyphicon-remove"></span></td>-->
+        </tr>
+        <tr>
+            <td contenteditable="true">Laurence</td>
+            <td contenteditable="true">Peter</td>
+            <td contenteditable="true">Technical Assistant</td>
+            <td <input type='button' value='Delete' class='delete-row' onclick='delete_row("+table_len+")'>DEL</td>
+            <!--<td><span class="delete-row glyphicon glyphicon-remove"></span></td>-->
+        </tr>
+        <tr>
+            <td contenteditable="true">Joe</td>
+            <td contenteditable="true">Franklin</td>
+            <td contenteditable="true">Accountant</td>
+            <td <input type='button' value='Delete' class='delete-row' onclick='delete_row("+table_len+")'>DEL</td>
+            <!--<td><span class="delete-row glyphicon glyphicon-remove"></span></td>-->
+        </tr>
+        <!-- hidden row -->
+        <tr class="hidden">
+            <td contenteditable="true">NIL</td>
+            <td contenteditable="true">NIL</td>
+            <td contenteditable="true">NIL</td>
+            <td <input type='button' value='Delete' class='delete-row' onclick='delete_row("+table_len+")'>DEL</td>
+            <!--<td><span class="delete-row glyphicon glyphicon-remove"></span></td>-->
+        </tr>
+        <tr class="footer">FOOTER </tr>
+    </table>
+</div>
+
+<script type="text/javascript">
+    // $(document).ready(function() {
+    //     // function to add row
+    //     $('.add-row').click(function () {
+    //         var $row = $('#mytable').find('tr.hidden').clone(true).removeClass('hidden');
+    //         $('#mytable').find('table').append($row);
+    //     });
+    //
+    //     // function to remove row
+    //     $('.delete-row').click(function () {
+    //         $(this).parents('tr').detach();
+    //     });
+    // });
+</script>
+
+</body>
+</html>
