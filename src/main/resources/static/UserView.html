@@ -29,7 +29,7 @@
                 <label for="birthDay">Birth Day:</label>
                 <input type="date" class="form-control" id="birthDay" name="name">
                 <label for="gender">Gender:</label>
-                <input type="text" class="form-control" id="Gender" name="name">
+                <input type="text" class="form-control" id="gender" name="name">
             </div>
             <button type="button" class="btn btn-default" onclick="onCreateNewUser()">Create</button>
         </form>
@@ -51,10 +51,14 @@
 </div>
 
 <script type="text/javascript">
+    var editor;
+    // Activate an inline edit on click of a table cell
+
     $(document).ready(function(){
+
         datatable = $('#userTable').DataTable({
             ajax: {
-                url: '/api/v1/userRepList',
+                url: '/api/v1/userlist',
                 // defaults to data unless we define otherwise
                 dataSrc: ''
             },
@@ -67,19 +71,24 @@
                 {
                     data: 'active',
                     render: function(data, type, row) {
-                            return '<button type="button" class="btn btn-primary btn-sm" onclick="onToggleDeleteUser(\'' + row.id + '\')">Delete</button>'
+                            return '<button type="button" class="btn btn-primary btn-sm" onclick="onToggleDeleteUser(\'' + row.userId + '\')">Delete</button>'
                     }
                 }
             ],
             order: [[2, "desc"], [3, "desc"]]
         });
+
     });
     // TODO consolidate JavaScript functions somewhere else
     function onCreateNewUser() {
         $.post({
-            url: '/api/trial',
+            url: '/api/v1/user/create',
             // https://stackoverflow.com/questions/9169495/passing-variables-to-a-form-using-onclick
-            data: { name: document.getElementById('name').value },
+            data: { firstName: document.getElementById('firstName').value
+                  , lastName: document.getElementById('lastName').value
+                  , birthDay: document.getElementById('birthDay').value
+                  , gender: document.getElementById('gender').value
+            },
             contentType: 'application/x-www-form-urlencoded',
             success: function (resp) {
                 Alert.info("Trial with id: " + resp.id + " was generated")
@@ -91,12 +100,30 @@
             }
         });
     }
-    function onToggleDeleteUser(uuid) {
-        console.log(uuid)
-        $.get('/api/user/' + uuid + '/delete', function (resp) {
-            Alert.info("User with id: " + resp.id + " was switched to inactive")
+    function onUpdateUser() {
+        $.post({
+            url: '/api/v1/user/update',
+            // https://stackoverflow.com/questions/9169495/passing-variables-to-a-form-using-onclick
+            data: { firstName: document.getElementById('firstName').value
+                , lastName: document.getElementById('lastName').value
+                , birthDay: document.getElementById('birthDay').value
+                , gender: document.getElementById('gender').value
+            },
+            contentType: 'application/x-www-form-urlencoded',
+            success: function (resp) {
+                Alert.info("Trial with id: " + resp.id + " was generated")
+                // datatable.rows.add([resp]).draw(); // Add new row and redraw (doesn't work for us because the active flag flips for old row)
+                // https://stackoverflow.com/questions/40074154/redraw-datatable-after-ajax-call
+                datatable.ajax.reload()
+                // activeTrial = resp
+                // loadActiveUserInfo()
+            }
+        });
+    }
+    function onToggleDeleteUser(userId) {
+        console.log(userId)
+        $.post('/api/v1/user/' + userId + '/delete', function (resp) {
             datatable.ajax.reload()
-            // loadActiveUserInfo()
         });
     }
 </script>
