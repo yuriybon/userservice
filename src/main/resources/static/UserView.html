@@ -30,7 +30,6 @@
                     </ul>
                 </div>
             </div>
-
         </nav>
     </div>
 
@@ -131,7 +130,17 @@
 
     });
     // TODO consolidate JavaScript functions somewhere else
+
+
     function onCreateNewUser() {
+        firstName = document.getElementById('firstName').value;
+        lastName = document.getElementById('lastName').value;
+
+        if (firstName == "" || lastName == "" ) {
+            Alert.error("Incorrect input of values");
+            return;
+        }
+
 
         if (!document.getElementById('userId').value) {
         $.post({
