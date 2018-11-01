@@ -22,8 +22,8 @@ public class User {
     @Column(name = "BIRTH_DATE")
     private Date birthDay;
 
-    @Column(name="GENDER")
-    private String gender;
+    private Gender gender;
+
 
     public Long getUserId() {
         return userId;
@@ -57,11 +57,13 @@ public class User {
         this.birthDay = birthDay;
     }
 
-    public String getGender() {
+    @JoinColumn(name = "GENDER_ID")
+    @ManyToOne(fetch = FetchType.LAZY)
+    public Gender getGender() {
         return gender;
     }
 
-    public void setGender(String gender) {
+    public void setGender(Gender gender) {
         this.gender = gender;
     }
 
@@ -73,12 +75,11 @@ public class User {
         return Objects.equals(userId, user.userId) &&
                 Objects.equals(firstName, user.firstName) &&
                 Objects.equals(lastName, user.lastName) &&
-                Objects.equals(birthDay, user.birthDay) &&
-                Objects.equals(gender, user.gender);
+                Objects.equals(birthDay, user.birthDay) ;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(userId, firstName, lastName, birthDay, gender);
+        return Objects.hash(userId, firstName, lastName, birthDay);
     }
 }
