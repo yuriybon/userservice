@@ -4,13 +4,14 @@ package ua.odessa.bondar.domain;
 import javax.persistence.*;
 import java.sql.Date;
 import java.util.Objects;
+import java.util.Optional;
 
 @Entity
 @Table(name="Users")
 public class User {
     @Id
     @Column(name = "USER_ID")
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy=GenerationType.AUTO)
     private Long userId;
 
     @Column(name = "FIRST_NAME")
@@ -22,7 +23,17 @@ public class User {
     @Column(name = "BIRTH_DATE")
     private Date birthDay;
 
-    private Gender gender;
+    @Column(name = "GENDER_ID" )
+    @JoinColumn(table = "GENDER", referencedColumnName = "GENDER_ID", columnDefinition = "GENDER_NAME", foreignKey =  @ForeignKey(name = "FK_USER_GENDER",value=ConstraintMode.NO_CONSTRAINT) , updatable = false, insertable = false)
+    private Long genderId;
+
+    @OneToOne(cascade = {CascadeType.ALL})
+    @PrimaryKeyJoinColumn
+    public Gender gender;
+
+//    @JoinColumn(table = "GENDER", referencedColumnName = "GENDER_ID", foreignKey =  @ForeignKey(name = "FK_USER_GENDER",value=ConstraintMode.NO_CONSTRAINT) , updatable = false, insertable = false)
+//    @ManyToOne(fetch = FetchType.EAGER, targetEntity = Gender.class)
+//    private Gender gender;
 
 
     public Long getUserId() {
@@ -50,20 +61,33 @@ public class User {
     }
 
     public Date getBirthDay() {
-        return birthDay;
+        //return birthDay.isPresent() ? new Date(birthDay.get().getTime()) : null;
+        return Optional
+                .ofNullable(birthDay)
+                .map(Date::getTime)
+                .map(Date::new)
+                .orElse(null);
     }
 
     public void setBirthDay(Date birthDay) {
-        this.birthDay = birthDay;
-    }
+        this.birthDay =     Optional
 
-    @JoinColumn(name = "GENDER_ID")
-    @ManyToOne(fetch = FetchType.LAZY)
-    public Gender getGender() {
-        return gender;
+                .ofNullable(birthDay)
+                .map(Date::getTime)
+                .map(Date::new)
+                .orElse(null);
+    }
+//
+//    public String getGender() {
+//        return gender.getGenderName();
+//    }
+//
+    public Long getGenderId() {
+        return genderId;
     }
 
     public void setGender(Gender gender) {
+        this.genderId = gender.getGenderId();
         this.gender = gender;
     }
 

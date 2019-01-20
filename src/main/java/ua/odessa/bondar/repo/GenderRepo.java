@@ -5,5 +5,6 @@ import ua.odessa.bondar.domain.Gender;
 
 import java.util.Optional;
 
-public interface GenderRepo extends CrudRepository<Gender,String> {
+public interface GenderRepo extends CrudRepository<Gender,Long> {
+
 }

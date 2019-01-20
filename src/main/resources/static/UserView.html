@@ -83,8 +83,8 @@
                         <div class="form-group row col-sm-10">
                             <label for="gender">Sex:</label>
                             <select name="mytype" id="gender">
-                                <option value="MEN">MEN</option>
-                                <option value="WOMEN">WOMEN</option>
+                                <option value="1">Male</option>
+                                <option value="2">Female</option>
                             </select>
                         </div>
                     </div>
@@ -114,7 +114,8 @@
                 { data: 'firstName' },
                 { data: 'lastName' },
                 { data: 'birthDay' },
-                { data: 'gender' },
+                { data: 'genderId',
+                    render: getGender(row.genderId) },
                 {
                     data: 'active',
                     render: function(data, type, row) {
@@ -192,7 +193,7 @@
                 , firstName: document.getElementById('firstName').value
                 , lastName: document.getElementById('lastName').value
                 , birthDay: document.getElementById('birthDay').value
-                , gender: document.getElementById('gender').value
+                , gender: document.getElementById('gender').accessKey
             },
             contentType: 'application/x-www-form-urlencoded',
             success: function (resp) {
@@ -210,6 +211,14 @@
         $.post('/api/v1/user/' + userId + '/delete', function (resp) {
             datatable.ajax.reload()
         });
+    }
+
+    function getGender(genderId){
+        console.log("genderId:"+genderId)
+        if (genderId == "1")
+            return "Male";
+        else
+            return "Female";
     }
 </script>
 </body>

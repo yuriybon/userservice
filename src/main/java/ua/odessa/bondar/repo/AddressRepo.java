@@ -1,4 +1,10 @@
 package ua.odessa.bondar.repo;
 
-public class AddressRepo {
+import org.springframework.data.repository.CrudRepository;
+import ua.odessa.bondar.domain.Address;
+
+public interface AddressRepo extends CrudRepository<Address,String> {
+
+
+
 }

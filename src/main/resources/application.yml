@@ -1,0 +1,49 @@
+logging:
+  level:
+    .: error
+    org.springframework: ERROR
+    com.mkyong: ERROR
+
+
+spring:
+  profiles:
+    active: devoracle
+    banner-mode: "off"
+  http:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 50MB
+
+server:
+  contextPath: "/userserv"
+  port: 8085
+
+
+---
+spring:
+  profiles: devh2
+  jpa:
+    generate-ddl: true
+    database-platform: org.hibernate.dialect.Oracle10gDialect
+    hibernate:
+      ddl-auto: create
+  datasource:
+    url: "jdbc:h2:file:~/USERDB_NEW;DB_CLOSE_ON_EXIT=FALSE"
+    username: sa
+    password: ""
+    driverClassName: org.h2.Driver
+
+---
+spring:
+  profiles: devoracle
+  jpa:
+    generate-ddl: true
+    database-platform: org.hibernate.dialect.Oracle10gDialect
+    hibernate:
+     ddl-auto: none
+     show-sql: true
+  datasource:
+    url: "jdbc:oracle:thin:@//localhost:1521/XEPDB1"
+    username: hr
+    password: "hrtest"
+    driverClassName: oracle.jdbc.OracleDriver

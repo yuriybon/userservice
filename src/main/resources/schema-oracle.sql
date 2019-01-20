@@ -19,26 +19,25 @@
 --
 --     @Column(name="GENDER")
 --     private String gender;
-drop table users;
-drop table gender;
+-- drop table users;
+-- drop table gender;
 
-create table gender {
-gender_id varchar2(4),
-gender_name varchar2(25),
+-- create table gender {
+-- gender_id varchar2(5),
+-- gender_name varchar2(25),
+-- }
 
-}
-
-insert into getnder(gender_id, gender_name) values('MEN','Male');
-insert into getnder(gender_id, gender_name) values('WOMEN','Female');
+insert into gender(gender_id, gender_name) values('MEN','Male');
+insert into gender(gender_id, gender_name) values('WOMEN','Female');
 commit;
 
-create table users (
-USER_ID bigint auto_increment,
-FIRST_NAME varchar(255),
-LAST_NAME varchar(255),
-BIRTH_DATE date,
-GENDER_ID varchar(4)
-);
+-- create table users (
+-- USER_ID bigint auto_increment,
+-- FIRST_NAME varchar(255),
+-- LAST_NAME varchar(255),
+-- BIRTH_DATE date,
+-- GENDER_ID varchar(4)
+-- );
 
 
 

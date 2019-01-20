@@ -45,6 +45,7 @@ public class UserServiceApplication {
     @ConfigurationProperties(prefix = "spring.datasource")
     public DataSource primaryDataSource() throws SQLException {
         //return DataSourceBuilder.create().build();
+        System.out.println("driver:"+driver);
         DataSourceBuilder dataSourceBuilder = DataSourceBuilder.create();
         dataSourceBuilder.driverClassName(driver);
         dataSourceBuilder.username(username);

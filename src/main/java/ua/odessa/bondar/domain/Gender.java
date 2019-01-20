@@ -7,15 +7,31 @@ import javax.persistence.*;
 @Table(name="GENDER")
 public class Gender {
     @Id
-    @Column(name="GENDER_ID" ,unique = true ,nullable = false, length = 4,updatable = false, insertable = false)
-    private String genderId;
+    @Column(name="GENDER_ID" ,unique = true ,nullable = false)
+    @GeneratedValue(strategy=GenerationType.AUTO)
+    private Long genderId;
 
     @Column(name = "GENDER_NAME", length = 50)
     private String genderName;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "gender")
-    private User user;
+    public Gender(String genderName) {
+        this.genderName = genderName;
+    }
 
 
+    public Long getGenderId() {
+        return genderId;
+    }
 
+    public void setGenderId(Long genderId) {
+        this.genderId = genderId;
+    }
+
+    public String getGenderName() {
+        return genderName;
+    }
+
+    public void setGenderName(String genderName) {
+        this.genderName = genderName;
+    }
 }
