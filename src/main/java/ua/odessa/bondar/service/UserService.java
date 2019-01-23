@@ -28,7 +28,7 @@ public class UserService {
         return userRepo.findAll();
     }
 
-    public void createUser(String firstName, String lastName, Date birthDay , String gender) {
+    public void createUser(String firstName, String lastName, Date birthDay , Long gender) {
 
 
         User user = new User();
@@ -44,7 +44,7 @@ public class UserService {
     }
 
 
-    public void updateUser(Long UserId, String firstName, String lastName, Date birthDay , String gender) {
+    public void updateUser(Long UserId, String firstName, String lastName, Date birthDay , Long gender) {
         Optional<User> userOptional = userRepo.findById(UserId);
         Optional<Gender> genderValue = genderRepo.findById(gender);
         if (userOptional == null)
@@ -57,4 +57,12 @@ public class UserService {
         userRepo.save(user);
     }
 
+    public List<User> getListUsers() {
+        Iterable<User> usersIter = getUsers();
+        List<User> users = new ArrayList<>();
+        for (User user : usersIter) {
+            users.add(user);
+        }
+        return users;
+    }
 }
