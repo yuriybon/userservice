@@ -14,6 +14,18 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+/*
+@startuml
+!define SEQUENCE (S,#AAAAAA) Database Sequence
+!define TABLE (T,#FFFF00) Database Table
+
+class USER_DATA << TABLE >>
+class USER_PROFILES << TABLE >>
+class UID << SEQUENCE >>
+USER_DATA "1" -- "1" USER_PROFILES
+UID -> USER_DATA
+@enduml
+*/
 @Service
 public class UserService {
 
