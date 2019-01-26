@@ -1,59 +1,54 @@
 package ua.odessa.bondar.domain;
 
-
 import javax.persistence.*;
-import java.sql.Date;
-import java.util.Objects;
-import java.util.Optional;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import java.io.Serializable;
 
 @Entity
-@Table(name="Users")
-public class User {
+@Table(name = "user_data")
+public class User implements Serializable {
     @Id
-    @Column(name = "USER_ID")
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @Column(name = "user_data_tid")
     private Long userId;
 
-    @Column(name = "FIRST_NAME")
+    @NotNull
+    @Size(max = 65)
+    @Column(name = "first_name")
     private String firstName;
 
-    @Column(name =  "LAST_NAME")
+    @Size(max = 65)
+    @Column(name = "last_name")
     private String lastName;
 
-    @Column(name = "BIRTH_DATE")
-    private Date birthDay;
+    @NotNull
+    @Email
+    @Size(max = 100)
+    @Column(unique = true)
+    private String email;
 
-    @Column(name = "GENDER_ID" )
-//    @JoinColumn(table = "GENDER", referencedColumnName = "GENDER_ID", columnDefinition = "GENDER_NAME", foreignKey =  @ForeignKey(name = "FK_USER_GENDER",value=ConstraintMode.NO_CONSTRAINT) , updatable = false, insertable = false)
-    private Long genderId;
+    @NotNull
+    @Size(max = 128)
+    private String password;
 
-    @OneToOne(cascade = {CascadeType.ALL})
-    @PrimaryKeyJoinColumn
-    @JoinColumn(table = "GENDER", referencedColumnName = "GENDER_ID", columnDefinition = "GENDER_NAME", foreignKey =  @ForeignKey(name = "FK_USER_GENDER",value=ConstraintMode.NO_CONSTRAINT) , updatable = false, insertable = false)
-    public Gender gender;
+    @OneToOne(mappedBy = "user")
+    private UserProfile userProfile;
 
-//    @JoinColumn(table = "GENDER", referencedColumnName = "GENDER_ID", foreignKey =  @ForeignKey(name = "FK_USER_GENDER",value=ConstraintMode.NO_CONSTRAINT) , updatable = false, insertable = false)
-//    @ManyToOne(fetch = FetchType.EAGER, targetEntity = Gender.class)
-//    private Gender gender;
-
+    // Hibernate requires a no-arg constructor
     public User() {
 
     }
 
-    public User(String firstName, String lastName, Date birthDay, Gender gender) {
+    public User(String firstName, String lastName, String email, String password) {
         this.firstName = firstName;
         this.lastName = lastName;
-        this.birthDay = birthDay;
-        this.gender = gender;
+        this.email = email;
+        this.password = password;
     }
 
-    public Long getUserId() {
-        return userId;
-    }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
 
     public String getFirstName() {
         return firstName;
@@ -71,40 +66,28 @@ public class User {
         this.lastName = lastName;
     }
 
-    public Date getBirthDay() {
-        //return birthDay.isPresent() ? new Date(birthDay.get().getTime()) : null;
-        return Optional
-                .ofNullable(birthDay)
-                .map(Date::getTime)
-                .map(Date::new)
-                .orElse(null);
+    public String getEmail() {
+        return email;
     }
 
-    public void setBirthDay(Date birthDay) {
-        this.birthDay =     Optional
-
-                .ofNullable(birthDay)
-                .map(Date::getTime)
-                .map(Date::new)
-                .orElse(null);
-    }
-    //
-//    public String getGenderName() {
-//        return gender.getGenderName();
-//    }
-//
-    public Long getGenderId() {
-        return genderId;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
-
-//    public Gender getGender() {
-//        System.out.println("Gender name :"+gender.getGenderName());
-//        return gender;
-//    }
-
-    public void setGender(Gender gender) {
-        this.gender = gender;
+    public String getPassword() {
+        return password;
     }
 
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public UserProfile getUserProfile() {
+        return userProfile;
+    }
+
+    public void setUserProfile(UserProfile userProfile) {
+        this.userProfile = userProfile;
+    }
 }
+

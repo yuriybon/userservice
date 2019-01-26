@@ -2,7 +2,7 @@ logging:
   level:
     .: error
     org.springframework: ERROR
-    com.mkyong: ERROR
+    ua.odessa.bondar: ERROR
 
 
 spring:
@@ -10,13 +10,16 @@ spring:
     active: devoracle
     banner-mode: "off"
   http:
+
+  servlet:
     multipart:
       max-file-size: 50MB
       max-request-size: 50MB
 
 server:
-  contextPath: "/userserv"
   port: 8085
+  servlet:
+    context-path: "/userserv"
 
 
 ---
@@ -40,7 +43,7 @@ spring:
     generate-ddl: true
     database-platform: org.hibernate.dialect.Oracle10gDialect
     hibernate:
-      ddl-auto: none
+      ddl-auto: create
       show-sql: true
   datasource:
     url: "jdbc:oracle:thin:@//localhost:1521/XEPDB1"

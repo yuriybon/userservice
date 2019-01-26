@@ -7,15 +7,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ua.odessa.bondar.domain.User;
-import ua.odessa.bondar.repo.UserRepository;
 import ua.odessa.bondar.service.UserService;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.sql.Date;
-import java.util.Iterator;
+import java.util.Date;
 import java.util.List;
-import java.util.function.Consumer;
+import java.util.Optional;
 
 
 @RestController
@@ -74,19 +72,46 @@ public class RedirectController {
     }
 
     @PostMapping("/api/v1/user/create")
-    public void createUser(@RequestParam String firstName
-                         , @RequestParam String lastName
-                         , @RequestParam Date birthDay
-                         , @RequestParam Long gender) throws IOException {
-        userService.createUser(firstName,lastName,birthDay,gender);
+    public void createUser(
+              @RequestParam(required = false) Optional<String> firstName
+            , @RequestParam (required = false ) Optional<String> lastName
+            , @RequestParam (required = false ) Optional<String> email
+            , @RequestParam (required = false ) Optional<String> password
+            , @RequestParam (required = false ) Optional<String> phoneNumber
+            , @RequestParam (required = false ) Optional<String> gender
+            , @RequestParam (required = false ) Optional<Date> birthDay
+            , @RequestParam (required = false ) Optional<String> address1
+            , @RequestParam (required = false ) Optional<String> address2
+            , @RequestParam (required = false ) Optional<String> street
+            , @RequestParam (required = false ) Optional<String> city
+            , @RequestParam (required = false ) Optional<String> state
+            , @RequestParam (required = false ) Optional<String> country
+            , @RequestParam (required = false ) Optional<String> zipCode
+    ) throws IOException {
+        userService.createUser(
+                firstName.get()
+                , lastName.get()
+                , email.get()
+                , password.get()
+                , phoneNumber.get()
+                , gender.get()
+                , birthDay.get()
+                , address1.get()
+                , address2.get()
+                , street.get()
+                , city.get()
+                , state.get()
+                , country.get()
+                , zipCode.get()
+        );
     }
 
-    @PostMapping("/api/v1/user/update")
-    public void createUser(@RequestParam Long userId
-            , @RequestParam String firstName
-            , @RequestParam String lastName
-            , @RequestParam Date birthDay
-            , @RequestParam Long gender) throws IOException {
-        userService.updateUser(userId,firstName,lastName,birthDay,gender);
-    }
+//    @PostMapping("/api/v1/user/update")
+//    public void createUser(@RequestParam Long userId
+//            , @RequestParam String firstName
+//            , @RequestParam String lastName
+//            , @RequestParam Date birthDay
+//            , @RequestParam Long gender) throws IOException {
+//        userService.updateUser(userId,firstName,lastName,birthDay,gender);
+//    }
 }
