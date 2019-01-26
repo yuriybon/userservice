@@ -16,14 +16,67 @@ import java.util.Optional;
 
 /*
 @startuml
+' this is comment
 !define SEQUENCE (S,#AAAAAA) Database Sequence
 !define TABLE (T,#FFFF00) Database Table
+!define Table(name,desc) class name as "desc" << (T,#FFAAAA) >>
+!define primary_key(x) <b>x</b>
+!define unique(x) <color:green>x</color>
+!define not_null(x) <u>x</u>
 
 class USER_DATA << TABLE >>
 class USER_PROFILES << TABLE >>
-class UID << SEQUENCE >>
+class SEQ_USER_DATA << SEQUENCE >>
 USER_DATA "1" -- "1" USER_PROFILES
-UID -> USER_DATA
+SEQ_USER_DATA -> USER_DATA
+
+hide methods
+hide stereotypes
+
+' entities
+
+Table(user, "user\n(User in our system)") {
+primary_key(id) INTEGER
+not_null(unique(username)) VARCHAR[32]
+not_null(password) VARCHAR[64]
+}
+
+Table(session, "session\n(session for user)") {
+primary_key(id) INTEGER
+not_null(user_id) INTEGER
+not_null(unique(session_id) VARCHAR[64]
+}
+
+Table(user_profile, "user_profile\n(Some info of user)") {
+primary_key(user_id) INTEGER
+age SMALLINT
+gender SMALLINT
+birthday DATETIME
+}
+
+Table(group, "group\n(group of users)") {
+primary_key(id) INTEGER
+not_null(name) VARCHAR[32]
+}
+
+
+Table(user_group, "user_group\n(relationship of user and group)") {
+primary_key(user_id) INTEGER
+primary_key(group_id) INTEGER
+joined_at DATETIME
+}
+
+
+' relationships
+' one-to-one relationship
+user -- user_profile : "A user only \nhas one profile"
+' one to may relationship
+user --> session : "A user may have\n many sessions"
+' many to many relationship
+' Add mark if you like
+user "1" --> "*" user_group : "A user may be \nin many groups"
+group "1" --> "0..N" user_group : "A group may \ncontain many users"
+
 @enduml
 */
 @Service
